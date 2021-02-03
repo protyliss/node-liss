@@ -1,45 +1,42 @@
-const ngProjects = require("./utils/ng-projects");
+const ngProjects    = require("./utils/ng-projects");
 const cwdFileExists = require("../utils/cwd-file-exists");
-const cwdRequire = require("../utils/cwd-require");
-const cwdWriteJson = require("../utils/cwd-write-json");
+const cwdRequire    = require("../utils/cwd-require");
+const cwdWriteJson  = require("../utils/cwd-write-json");
+const getConfigure  = require('../core/get-configure.js');
 console.log('Optimize (package.json).scripts');
 
 const scripts = {};
-let port = 4200;
+let port      = 4200;
 
-const configure = {
+const configure = getConfigure({
 	ng: {
 		optimizeScripts: {
 			application: null,
-			library: null
+			library    : null
 		}
-	},
-	...(cwdFileExists('liss.json') ? cwdRequire('liss.json') : {})
-};
+	}
+});
 
 const jobConfigure = configure.ng.optimizeScripts;
 
-Object.entries(ngProjects())
-	.sort((a, b) => a[0].localeCompare(b[0]))
-	.forEach(([key, project]) => {
+ngProjects().forEach(([key, project]) => {
+	const projectFlag = `--project=${key}`;
 
-		const projectFlag = `--project=${key}`;
+	if (project.projectType === 'application') {
+		const portFlag = projectFlag + ` --port=${port++}`;
 
-		if (project.projectType === 'application') {
-			const portFlag = projectFlag + ` --port=${port++}`;
+		scripts[key + ':serve'] = `ng serve ${portFlag} --open`;
+		scripts[key + ':build'] = `ng build ${projectFlag} --output-hashing=all`;
+		scripts[key + ':prod']  = scripts[key + ':build'] + ' --prod --verbose';
 
-			scripts[key + ':serve'] = `ng serve ${portFlag} --open`;
-			scripts[key + ':build'] = `ng build ${projectFlag} --output-hashing=all`;
-			scripts[key + ':prod'] = scripts[key + ':build'] + ' --prod --verbose';
+		addAdditionalScript(scripts, jobConfigure.application, key);
 
-			addAdditionalScript(scripts, jobConfigure.application, key);
-
-		} else {
-			scripts[key + ':build'] = `ng build ${projectFlag}`;
-			scripts[key + ':prod'] = scripts[key + ':build'] + ' --prod';
-			addAdditionalScript(scripts, jobConfigure.library, key);
-		}
-	});
+	} else {
+		scripts[key + ':build'] = `ng build ${projectFlag}`;
+		scripts[key + ':prod']  = scripts[key + ':build'] + ' --prod';
+		addAdditionalScript(scripts, jobConfigure.library, key);
+	}
+});
 
 function addAdditionalScript(scripts, map, key) {
 	if (!map) {

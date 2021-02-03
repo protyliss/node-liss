@@ -1,13 +1,19 @@
 {
   "name": "node-liss",
-  "version": "0.1.0",
+  "version": "21.34.0",
   "description": "CLI for node.js-based workspace",
-  "scripts": {
-  },
+  "scripts": {},
   "bin": {
     "liss": "liss.js"
   },
-  "keywords": ["liss", "cli", "angular", "ng", "typescript", "ts"],
+  "keywords": [
+    "liss",
+    "cli",
+    "angular",
+    "ng",
+    "typescript",
+    "ts"
+  ],
   "author": "protyliss@gmail.com",
   "license": "ISC",
   "dependencies": {
