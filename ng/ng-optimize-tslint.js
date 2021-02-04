@@ -2,6 +2,7 @@ const getConfigure = require('../core/get-configure.js');
 const ngProjects   = require('./utils/ng-projects.js');
 const cwdRequire   = require('../utils/cwd-require.js');
 const cwdWriteJson = require('../utils/cwd-write-json.js');
+
 console.log('Optimize tslint.json');
 
 const configure = getConfigure({
