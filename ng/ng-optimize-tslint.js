@@ -31,7 +31,7 @@ const regexpMap = Object.entries(jobConfigure).reduce((map, [conditions, selecto
 
 const properties = ['directive-selector', 'component-selector'];
 
-ngProjects().forEach(([key, project]) => {
+ngProjects().entries().forEach(([key, project]) => {
 	const {root} = project;
 
 	const tslintJson = cwdRequire(root, 'tslint.json');

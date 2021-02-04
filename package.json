@@ -4,7 +4,7 @@
   "description": "CLI for node.js-based workspace",
   "scripts": {},
   "bin": {
-    "liss": "liss.js"
+    "node-liss": "liss.js"
   },
   "keywords": [
     "liss",

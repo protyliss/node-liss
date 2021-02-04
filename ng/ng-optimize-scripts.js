@@ -19,7 +19,7 @@ const configure = getConfigure({
 
 const jobConfigure = configure.ng.optimizeScripts;
 
-ngProjects().forEach(([key, project]) => {
+ngProjects().entries().forEach(([key, project]) => {
 	const projectFlag = `--project=${key}`;
 
 	if (project.projectType === 'application') {
