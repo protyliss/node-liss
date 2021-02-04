@@ -8,7 +8,7 @@ const cwdWriteJson = require("../utils/cwd-write-json");
 const ngProjects = require("./utils/ng-projects");
 
 console.log('Set `package.json` for Sub Module in Library');
-ngProjects('library').forEach(([key, project]) => {
+Object.entries(ngProjects('library')).forEach(([key, project]) => {
 	const {root} = project;
 
 	let startIndex = root.length + 1;

@@ -1,9 +1,8 @@
 const ngProjects    = require("./utils/ng-projects");
-const cwdFileExists = require("../utils/cwd-file-exists");
 const cwdRequire    = require("../utils/cwd-require");
 const cwdWriteJson  = require("../utils/cwd-write-json");
 const getConfigure  = require('../core/get-configure.js');
-console.log('Optimize (package.json).scripts');
+console.log('Optimize package.scripts');
 
 const scripts = {};
 let port      = 4200;
@@ -19,7 +18,7 @@ const configure = getConfigure({
 
 const jobConfigure = configure.ng.optimizeScripts;
 
-ngProjects().entries().forEach(([key, project]) => {
+Object.entries(ngProjects()).forEach(([key, project]) => {
 	const projectFlag = `--project=${key}`;
 
 	if (project.projectType === 'application') {

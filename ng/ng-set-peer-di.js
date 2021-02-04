@@ -1,9 +1,9 @@
 const ngProjects = require("./utils/ng-projects");
 
-const cwdRequire = require("../utils/cwd-require");
+const cwdRequire        = require("../utils/cwd-require");
 const getTsImportModule = require("../ts/utils/get-ts-import-module");
-const cwdFileExists = require("../utils/cwd-file-exists");
-const cwdWriteJson = require("../utils/cwd-write-json");
+const cwdFileExists     = require("../utils/cwd-file-exists");
+const cwdWriteJson      = require("../utils/cwd-write-json");
 
 console.log('Update peerDependencies from Source')
 
@@ -13,11 +13,11 @@ const libraryVersions = {
 	...(packageJson.dependencies || {})
 };
 
-ngProjects('library').entries().forEach(([key, project]) => {
+Object.entries(ngProjects('library')).forEach(([key, project]) => {
 	libraryVersions[key] = cwdRequire(project.root, 'package.json').version;
 });
 
-ngProjects().entries().forEach(([key, project]) => {
+Object.entries(ngProjects()).forEach(([key, project]) => {
 	const {root, sourceRoot} = project;
 
 	if (!cwdFileExists(root, 'package.json')) {
@@ -46,7 +46,7 @@ ngProjects().entries().forEach(([key, project]) => {
 
 	console.log(key, peerDependencies);
 
-	const projectPackageJson = cwdRequire(root, 'package.json');
+	const projectPackageJson            = cwdRequire(root, 'package.json');
 	projectPackageJson.peerDependencies = peerDependencies;
 
 	cwdWriteJson(root, 'package.json', projectPackageJson);

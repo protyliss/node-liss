@@ -1,8 +1,8 @@
 console.log('Import Angular Library as Live');
 
-const cwdRequire        = require('../utils/cwd-require.js');
-const cwdWriteJson      = require('../utils/cwd-write-json.js');
-const ngLibraryPackages = require('./utils/ng-library-packages.js');
+const cwdRequire            = require('../utils/cwd-require.js');
+const cwdWriteJson          = require('../utils/cwd-write-json.js');
+const ngLibraryPackages     = require('./utils/ng-library-packages.js');
 const ngPromptSelectLibrary = require("./prompts/select-library");
 
 ngPromptSelectLibrary()
@@ -18,8 +18,8 @@ ngPromptSelectLibrary()
 
 			paths[key] = [
 				packageJson.lib ?
-					sourceRoot + startsWithSlash(packageJson.lib.entryFile) :
-					sourceRoot + startsWithSlash(packageJson.ngPackage.lib.entryFile)
+					sourceRoot + entryFile(packageJson.lib.entryFile) :
+					sourceRoot + entryFile(packageJson.ngPackage.lib.entryFile)
 			];
 		});
 
@@ -35,6 +35,9 @@ ngPromptSelectLibrary()
 		cwdWriteJson('tsconfig.json', tsConfigJson);
 	});
 
-function startsWithSlash(dir) {
-	return dir.startsWith('/') ? dir : '/' + dir;
+function entryFile(file) {
+	if (!file.startsWith('/')) {
+		file = '/' + file;
+	}
+	return file.substr(0, file.length - 3);
 }

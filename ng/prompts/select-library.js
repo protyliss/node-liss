@@ -1,5 +1,5 @@
 const INQUIRER = require('inquirer');
-const ngProjects = require("./ng-projects");
+const ngProjects = require("../utils/ng-projects");
 
 function ngPromptSelectLibrary() {
 	const projects = ngProjects('library');
@@ -15,7 +15,7 @@ function ngPromptSelectLibrary() {
 	])
 		.then(answers => {
 			const {key} = answers;
-			const project = projects[name];
+			const project = projects[key];
 			return Promise.resolve({key, project});
 		});
 }

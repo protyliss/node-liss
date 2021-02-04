@@ -1,7 +1,7 @@
 const PATH          = require('path');
 const PROCESS       = require('process');
-const cwdRequire    = require('../../utils/cwd-require.js');
 const GLOB          = require('glob');
+const cwdRequire    = require('../../utils/cwd-require.js');
 const cwdDirExists  = require('../../utils/cwd-dir-exists.js');
 const cwdFileExists = require('../../utils/cwd-file-exists.js');
 

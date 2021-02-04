@@ -4,7 +4,7 @@ const setVersionByTime = require("../core/set-version-by-time");
 const getFilesLastModifiedTime = require("../core/get-files-last-modified-time");
 
 
-ngProjects().entries().forEach(([key, project]) => {
+Object.entries(ngProjects('library')).forEach(([key, project]) => {
 	const {root, sourceRoot} = project;
 
 	if (!cwdFileExists(root, 'package.json')) {
