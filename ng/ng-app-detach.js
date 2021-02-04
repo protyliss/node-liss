@@ -1,6 +1,6 @@
 const ngPromptSelectApplication = require("./prompts/select-application");
 const cwdRequire                = require("../utils/cwd-require");
-const getTsImportModule         = require("../ts/utils/get-ts-import-module");
+const getTsImportModules         = require("../ts/utils/get-ts-import-module");
 const cwdFileExists             = require("../utils/cwd-file-exists");
 const getConfigure              = require("../core/get-configure");
 const cwdWriteJson              = require("../utils/cwd-write-json");
@@ -25,7 +25,7 @@ ngPromptSelectApplication({requiredConfirm: true})
 
 		const {root} = project;
 
-		const usedModules = getTsImportModule(root);
+		const usedModules = getTsImportModules(root);
 		const projects    = {...angularJson.projects};
 
 		let current            = -1;
@@ -46,7 +46,7 @@ ngPromptSelectApplication({requiredConfirm: true})
 
 			usedLocalModules.push(module)
 
-			getTsImportModule(localProject.root).forEach((_module) => {
+			getTsImportModules(localProject.root).forEach((_module) => {
 				if (usedModules.indexOf(_module) === -1) {
 					usedModules.push(_module);
 				}

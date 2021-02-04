@@ -2,13 +2,13 @@ const FS = require('fs');
 const getTsFiles = require("./get-ts-files");
 
 const _IMPORTS = /import.+from\s+['"]([^'"]+)['"]/g;
-const _IMPORT = /import.+from\s+['"]([^'"\/]+(?:\/[^"'\/]+)?)[^"']*['"]/;
+const _IMPORT = /import.+from\s+['"]([^'"]+)['"]/;
 
 /**
  *
  * @param {string} root
  */
-function getTsImportModule(root) {
+function getTsImportFroms(root) {
 	return getTsFiles(root)
 		.reduce(
 			(modules, file) => {
@@ -33,4 +33,4 @@ function getTsImportModule(root) {
 		.sort();
 }
 
-module.exports = getTsImportModule;
+module.exports = getTsImportFroms;

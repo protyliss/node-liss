@@ -1,11 +1,10 @@
-
-const getTsImportModule = require("../ts/utils/get-ts-import-module");
-const GLOB = require("glob");
-const cwdDirExists = require("../utils/cwd-dir-exists");
-const cwdFileExists = require("../utils/cwd-file-exists");
-const cwdRequire = require("../utils/cwd-require");
-const cwdWriteJson = require("../utils/cwd-write-json");
-const ngProjects = require("./utils/ng-projects");
+const GLOB               = require("glob");
+const cwdDirExists       = require("../utils/cwd-dir-exists");
+const cwdFileExists      = require("../utils/cwd-file-exists");
+const cwdRequire         = require("../utils/cwd-require");
+const cwdWriteJson       = require("../utils/cwd-write-json");
+const ngProjects         = require("./utils/ng-projects");
+const getTsImportFroms   = require('../ts/utils/get-ts-import-froms.js');
 
 console.log('Set `package.json` for Sub Module in Library');
 Object.entries(ngProjects('library')).forEach(([key, project]) => {
@@ -28,18 +27,18 @@ Object.entries(ngProjects('library')).forEach(([key, project]) => {
 			console.group(subname);
 
 			const subPackageJson = cwdFileExists(dir, 'package.json') ?
-					cwdRequire(dir, 'package.json') :
-					{
-						ngPackage: {
-							lib: {
-								entryFile: 'public-api.ts'
-							}
+				cwdRequire(dir, 'package.json') :
+				{
+					ngPackage: {
+						lib: {
+							entryFile: 'public-api.ts'
 						}
-					};
+					}
+				};
 
 			const {lib} = subPackageJson.ngPackage;
 
-			lib['umdModuleIds'] = getTsImportModule(dir).reduce((umdIds, module) => {
+			lib['umdModuleIds'] = getTsImportFroms(dir).reduce((umdIds, module) => {
 				umdIds[module] = module;
 				return umdIds;
 			}, {});

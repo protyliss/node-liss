@@ -1,7 +1,7 @@
 const ngProjects = require("./utils/ng-projects");
 
 const cwdRequire        = require("../utils/cwd-require");
-const getTsImportModule = require("../ts/utils/get-ts-import-module");
+const getTsImportModules = require("../ts/utils/get-ts-import-module");
 const cwdFileExists     = require("../utils/cwd-file-exists");
 const cwdWriteJson      = require("../utils/cwd-write-json");
 
@@ -24,7 +24,7 @@ Object.entries(ngProjects()).forEach(([key, project]) => {
 		return;
 	}
 
-	const peerDependencies = getTsImportModule(sourceRoot)
+	const peerDependencies = getTsImportModules(sourceRoot)
 		.reduce((di, module) => {
 				if (module.startsWith('rxjs')) {
 					return di;
