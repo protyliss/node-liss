@@ -1,23 +1,17 @@
-const INQUIRER = require('inquirer');
-const ngProjects = require("../utils/ng-projects");
+const ngPromptSelectProject = require("./select-project");
 
-function ngPromptSelectLibrary() {
-	const projects = ngProjects('library');
-	const names = Object.keys(projects);
-
-	return INQUIRER.prompt([
-		{
-			type: 'list',
-			name: 'key',
-			message: 'Select Library',
-			choices: names
-		}
-	])
-		.then(answers => {
-			const {key} = answers;
-			const project = projects[key];
-			return Promise.resolve({key, project});
-		});
+/**
+ *
+ * @param {{}} option
+ * @param {boolean} option.multiple
+ * @param {boolean} option.requireConfirm
+ * @returns {Promise<Array.<string, {}>>}
+ */
+function ngPromptSelectLibrary(option = {}) {
+	return ngPromptSelectProject({
+		...option,
+		type: 'library'
+	})
 }
 
 module.exports = ngPromptSelectLibrary;

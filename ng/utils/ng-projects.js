@@ -2,6 +2,7 @@ const cwdRequire = require('../../utils/cwd-require.js');
 
 /**
  *
+ * @param {null | 'application' | 'library'} filterType
  * @returns [[string, Object.<string, any>>>
  */
 function ngProjects(filterType = null) {

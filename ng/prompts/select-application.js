@@ -1,31 +1,17 @@
-const INQUIRER = require('inquirer');
-const ngProjects = require("../utils/ng-projects");
+const ngPromptSelectProject = require("./select-project");
 
-function ngPromptSelectApplication({requiredConfirm} = {}) {
-	const projects = ngProjects('application');
-	const names = Object.keys(projects);
-
-	return INQUIRER.prompt([
-		{
-			type: 'list',
-			name: 'key',
-			message: 'Select Application',
-			choices: names
-		},
-		{
-			type: 'confirm',
-			name: 'confirm',
-			message: 'Are you Sure?',
-			when: requiredConfirm
-		}
-	])
-		.then(answers => {
-			const {key, confirm} = answers;
-			const project = projects[key];
-			return !requiredConfirm || confirm ?
-				Promise.resolve({key, project}) :
-				Promise.reject();
-		});
+/**
+ *
+ * @param {{}} option
+ * @param {boolean} option.multiple
+ * @param {boolean} option.requireConfirm
+ * @returns {Promise<Array.<string, {}>>}
+ */
+function ngPromptSelectApplication(option = {}) {
+	return ngPromptSelectProject({
+		...option,
+		type: 'application'
+	})
 }
 
 module.exports = ngPromptSelectApplication;

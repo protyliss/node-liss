@@ -2,6 +2,9 @@ const PATH = require('path');
 const GLOB = require('glob');
 const INQUIRER = require('inquirer');
 
+INQUIRER.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
+INQUIRER.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
+
 /**
  *
  * @param {string | string[]} dirs __dirname
@@ -44,10 +47,16 @@ function selectJob(dirs, autoSelect = false) {
 	} else {
 		INQUIRER.prompt([
 			{
-				type: 'list',
+				type: 'autocomplete',
 				name: 'job',
-				message: 'Select the job',
-				choices: jobNames
+				message: 'LISS will work for you',
+				choices: jobNames,
+				source(answersSoFar, input) {
+					return Promise.resolve(input ?
+						jobNames.filter(name => name.indexOf(input) > -1) :
+						jobNames
+					);
+				}
 			}
 		])
 			.then(answers => {
