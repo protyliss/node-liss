@@ -16,7 +16,9 @@ const configure = getConfigure({
 	}
 });
 
-ngPromptSelectApplication({requireConfirm: true})
+ngPromptSelectApplication({
+	requireConfirm: true
+})
 	.then(([selectedKey, project]) => {
 
 		const angularJson = cwdRequire('angular.json');
@@ -87,7 +89,6 @@ ngPromptSelectApplication({requireConfirm: true})
 
 		console.log('Update Properties');
 		packageJson.scripts = {
-			ng: "ng",
 			serve: "ng serve --open",
 			build: "ng build",
 			prod: "ng build --prod",

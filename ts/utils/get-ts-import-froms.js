@@ -16,12 +16,12 @@ function getTsImportFroms(root) {
 				const imports = source.match(_IMPORTS);
 				if (imports) {
 					imports.forEach(_import => {
-						console.log(_import);
 						const from = _import.match(_IMPORT)[1];
 						if (from.startsWith('.')) {
 							return;
 						}
 						if (modules.indexOf(from) === -1) {
+							console.log(from);
 							modules.push(from)
 						}
 					})

@@ -1,6 +1,7 @@
 const PATH = require('path');
 const GLOB = require('glob');
 const INQUIRER = require('inquirer');
+const getParameter = require("../../utils/get-parameter");
 
 INQUIRER.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
 INQUIRER.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
@@ -40,33 +41,41 @@ function selectJob(dirs, autoSelect = false) {
 
 	const jobNames = Object.keys(jobList);
 
-	if (autoSelect && jobNames.length === 1) {
-		const jobFile = jobList[jobNames[0]]
-		console.log('Auto Selected: ', jobNames[0]);
-		require(jobFile);
+	const jobParam = getParameter({
+		matches: jobNames
+	});
+
+	if (jobParam) {
+		require(jobList[jobParam]);
 	} else {
-		INQUIRER.prompt([
-			{
-				type: 'autocomplete',
-				name: 'job',
-				message: 'LISS will work for you',
-				choices: jobNames,
-				source(answersSoFar, input) {
-					return Promise.resolve(input ?
-						jobNames.filter(name => name.indexOf(input) > -1) :
-						jobNames
-					);
+
+		if (autoSelect && jobNames.length === 1) {
+			const jobFile = jobList[jobNames[0]]
+			console.log('Auto Selected: ', jobNames[0]);
+			require(jobFile);
+		} else {
+			INQUIRER.prompt([
+				{
+					type: 'autocomplete',
+					name: 'job',
+					message: 'LISS will work for you',
+					choices: jobNames,
+					source(answersSoFar, input) {
+						return Promise.resolve(input ?
+							jobNames.filter(name => name.indexOf(input) > -1) :
+							jobNames
+						);
+					}
 				}
-			}
-		])
-			.then(answers => {
-				const {job} = answers;
+			])
+				.then(answers => {
+					const {job} = answers;
 
-				const jobFile = jobList[job];
-				require(jobFile);
-			})
+					const jobFile = jobList[job];
+					require(jobFile);
+				})
+		}
 	}
-
 }
 
 module.exports = selectJob;

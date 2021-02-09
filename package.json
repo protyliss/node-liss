@@ -1,6 +1,6 @@
 {
   "name": "node-liss",
-  "version": "21.39.0",
+  "version": "21.40.0",
   "description": "CLI for node.js-based workspace",
   "scripts": {},
   "bin": {
@@ -15,6 +15,11 @@
     "ts"
   ],
   "author": "protyliss@gmail.com",
+  "homepage": "https://github.com/protyliss/node-liss#readme",
+  "bugs": {
+    "url": "https://github.com/protyliss/node-liss/issues",
+    "email": "protyliss@gmail.com"
+  },
   "license": "ISC",
   "dependencies": {
     "glob": "^7.1.6",

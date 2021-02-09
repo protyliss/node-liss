@@ -3,107 +3,218 @@
 CLI for node.js-based workspace
 
 ```bash
+# Now Available
 node-liss
-node-liss [platform]
-node-liss [platform] [job]
+node-liss [PLATFORM]
+node-liss [PLATFORM] [JOB]
 ```
 
-* platform:
-    * node
-    * ts
-    * ng
+* [PLATFORM]:
+    * Listing to Console
+    * **node**
+    * **ts**
+    * **ng**
+* [JOB]:
+    * Listing to Console
+    * **Follow the below job section**
 
-## node.js
+## Workspace Configure
 
-Auto-detecting by `package.json`
+Create `liss.json` to workspace root for customization.    
+Follow the detailed description in below `Configure` Section.
 
-### node-package-version
+```json
+{
+  "[PLATFORM]": {
+    "[JOB]": {
+    }
+  }
+}
+```
+
+
+
+---
+
+
+
+
+## Platform - `node`: node.js
+
+Auto-detecting by `package.json` when not entered [PLATFORM] parameter
+
+#### Direct Execute
+
+```bash
+node-liss node
+node-liss node [JOB]
+```
+
+
+
+###  Job - `node-package-version`
 
 *Update `package.json`*
 
 Change Version by Last Modified Time of Source files.
+
+#### Direct Execute
 
 ```bash
 node-liss node package-version
 ```
 
 
+
 ---
 
 
-## Angular
 
-Auto-detecting by `angular.json`
+## Platform - `ng`: Angular
 
-### ng-app-detach
-*Update `angular.json`, `package.json`, `tsconfig.json`*
-
-Make Workspace to Single Application from Multiple Application and Libraries
+Auto-detecting by `angular.json` when not entered [PLATFORM] parameter
 
 ```bash
-node-liss ng app-detach --project
+node-liss ng
+node-liss ng [JOB]
 ```
 
 
-### ng-lib-from-dist
+
+###  Job - `ng-app-detach`
+*Update `angular.json`, `package.json`, `tsconfig.json`*
+__Caution: Remove Unused files from Selected Project__
+
+Make Workspace to Single Application from Multiple Application and Libraries    
+
+
+#### Direct Execute
+
+```bash
+node-liss ng app-detach --project --confirm
+```
+
+#### Configure
+
+```json
+{
+  "ng": {
+    "appDetach": {
+      "addDependencies": {
+        "[PACKAGE]": "[VERSION]"
+      }
+    }
+  }
+}
+```
+* `addDependencies` are including to DI after optimized.
+
+
+###  Job - `ng-lib-from-dist`
 
 *Update `tsconfig.json`*
 
 Libraries from Set Library Path by Destination Directory after `ng build`
+
+__tsconfig.json > compilerOptions > paths__:
+```json
+{
+	"{{key}}": "dist/{{key}}"
+}
+```
+
+#### Direct Execute
 
 ```bash
 node-liss ng lib-from-dist --project
 ```
 
 
-### ng-lib-from-module
+### Job - `ng-lib-from-module`
 
 *Update `tsconfig.json`*
 
 Set Library Path by node_modules after `npm install`
+
+
+#### Direct Execute
 
 ```bash
 node-liss ng lib-from-module --project
 ```
 
 
-### ng-lib-from-src
+###  Job - `ng-lib-from-src`
 
 *Update `tsconfig.json`*
 
 Set Library Path by Source direction
 
+__tsconfig.json > compilerOptions > paths__:
+```json
+{
+	"{{key}}": [
+		"projects/{{key}}/src/public-api"
+	]
+}
+```
+
+#### Direct Call
 ```bash
 node-liss ng lib-from-src --project
 ```
 
 
-### ng-lib-package
+###  Job - `ng-lib-package`
 *Update `${project.root}/ng-package.json`, `${project.root}/${sub-package}/package.json`*
 
 Create or Update Library Package for `umdIds`, `styleIncludePaths`
+
+#### Direct Execute
 
 ```bash
 node-liss ng lib-package
 ```
 
 
-### ng-optimize-scripts
+###  Job - `ng-optimize-scripts`
 
 *Update `package.json`*
 
 Make Project's shorten commands
 
+#### Direct Execute
+
 ```bash
 node-liss ng optimize-scripts
 ```
 
+#### Configure
 
-### ng-optimize-tslint
+```json
+{
+  "ng": {
+    "optimizeScripts": {
+      "library": {
+        "{{key}}": "{{key}}"
+      },
+      "application": {
+        "{{key}}": "{{key}}"
+      }
+    }
+  }
+}
+```
+* `{{key}}` will replace to project key of angular
+
+
+###  Job - `ng-optimize-tslint`
 
 *Update `${project.root}/tslint.json`*
 
 Append Director and Component Selector
+
+#### Direct Execute
 
 ```bash
 node-liss ng optimize-tslint
@@ -120,6 +231,7 @@ node-liss ng optimize-tslint
   }
 }
 ```
+* Property Key is `RegExp`
 
 > projects/foo/tslint.json :
 > ```json

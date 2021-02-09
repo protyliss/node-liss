@@ -1,5 +1,7 @@
 const INQUIRER = require('inquirer');
 const ngProjects = require("../utils/ng-projects");
+const getFlag = require("../../utils/get-flag");
+
 
 /**
  * @param {null | 'application' | 'library'} type
@@ -11,6 +13,17 @@ function ngPromptSelectProject({type, multiple, requireConfirm} = {}) {
 	const projects = ngProjects(type);
 
 	const names = Object.keys(projects);
+
+	const projectFlag = getFlag('project', {matches: names});
+	const confirmFlag = getFlag('confirm');
+
+	console.log(projectFlag, confirmFlag);
+
+	process.exit(100);
+
+	if(confirmFlag){
+		requireConfirm = false;
+	}
 
 	const SELECT_ALL = 'All Projects';
 	const questions = [];
@@ -33,7 +46,7 @@ function ngPromptSelectProject({type, multiple, requireConfirm} = {}) {
 				choices: names,
 				searchable: true,
 				highlight: true,
-				source
+				source,
 			}
 		)
 	} else {
@@ -43,7 +56,8 @@ function ngPromptSelectProject({type, multiple, requireConfirm} = {}) {
 				name: 'keys',
 				message: 'Select Angular Project',
 				choices: names,
-				source
+				source,
+				when: !projectFlag,
 			}
 		)
 	}
@@ -61,6 +75,10 @@ function ngPromptSelectProject({type, multiple, requireConfirm} = {}) {
 	return INQUIRER.prompt(questions)
 		.then(answers => {
 			let {keys, confirm} = answers;
+
+			if(!keys){
+				keys = projectFlag;
+			}
 
 			if (!Array.isArray(keys)) {
 				keys = [keys];
