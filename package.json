@@ -1,11 +1,12 @@
 {
   "name": "node-liss",
-  "version": "21.40.1",
+  "version": "21.40.7",
   "description": "CLI for node.js-based workspace",
   "scripts": {},
   "bin": {
     "node-liss": "liss.js"
   },
+  "main": "liss.js",
   "keywords": [
     "liss",
     "cli",

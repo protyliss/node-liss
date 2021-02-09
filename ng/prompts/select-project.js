@@ -17,10 +17,6 @@ function ngPromptSelectProject({type, multiple, requireConfirm} = {}) {
 	const projectFlag = getFlag('project', {matches: names});
 	const confirmFlag = getFlag('confirm');
 
-	console.log(projectFlag, confirmFlag);
-
-	process.exit(100);
-
 	if(confirmFlag){
 		requireConfirm = false;
 	}

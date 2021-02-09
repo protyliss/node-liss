@@ -1,33 +1,43 @@
-const FS = require('fs');
-const GLOB = require('glob');
+const FS            = require('fs');
+const GLOB          = require('glob');
 const cwdFileExists = require("../utils/cwd-file-exists");
-const _IGNORE = /node_modules|\.[^\/]+|package-lock\.json/g;
+const _IGNORE       = /node_modules|\.[^\/]+|package-lock\.json/;
 
 function getFilesLastModifiedTime(...dirs) {
-	return Math.max.apply(
-		this,
-		dirs.reduce((mtimes, dir) => {
-				const prefix = dir.endsWith('/') ? dir.substr(0, dir.length - 1) : dir;
+	const mtimes = dirs.reduce((_mtimes, dir) => {
+			if (_IGNORE.test(dir)) {
+				return _mtimes;
+			}
 
-				return GLOB.sync(prefix + '/*').reduce((_mtimes, lowerItem) => {
-					if (_IGNORE.test(lowerItem)) {
-						return mtimes;
-					}
+			console.group(dir);
 
-					if (cwdFileExists(lowerItem)) {
-						mtimes.push(getDate(lowerItem))
-						return mtimes;
-					}
+			const prefix = dir.endsWith('/') ? dir.substr(0, dir.length - 1) : dir;
 
-					return _mtimes.concat(
-						GLOB.sync(lowerItem + '/**/*', {
-							nodir: true
-						}).map(getDate)
-					)
-				}, mtimes);
-			}, []
-		)
+			_mtimes = GLOB.sync(prefix + '/*').reduce((__mtimes, lowerItem) => {
+				if (_IGNORE.test(lowerItem)) {
+					return _mtimes;
+				}
+
+				console.log(lowerItem);
+
+				if (cwdFileExists(lowerItem)) {
+					_mtimes.push(getDate(lowerItem))
+					return _mtimes;
+				}
+
+				return __mtimes.concat(
+					GLOB.sync(lowerItem + '/**/*', {
+						nodir: true
+					}).map(getDate)
+				)
+			}, _mtimes);
+
+			console.groupEnd();
+			return _mtimes;
+		}, []
 	);
+
+	return Math.max.apply(this, mtimes);
 }
 
 function getDate(file) {
