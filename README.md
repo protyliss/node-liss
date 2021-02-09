@@ -10,13 +10,13 @@ node-liss [PLATFORM] [JOB]
 ```
 
 * [PLATFORM]:
-    * Listing to Console
-    * **node**
-    * **ts**
-    * **ng**
-* [JOB]:
-    * Listing to Console
-    * **Follow the below job section**
+  * Listing to Console when skip
+  * **node**
+  * **ts**
+  * **ng**
+  * [JOB]:
+      * Listing to Console when skip
+      * **Follow the below job section**
 
 ## Workspace Configure
 
@@ -91,6 +91,8 @@ Make Workspace to Single Application from Multiple Application and Libraries
 #### Direct Execute
 
 ```bash
+node-liss ng app-detach
+node-liss ng app-detach --project
 node-liss ng app-detach --project --confirm
 ```
 
@@ -126,6 +128,7 @@ __tsconfig.json > compilerOptions > paths__:
 #### Direct Execute
 
 ```bash
+node-liss ng lib-from-dist
 node-liss ng lib-from-dist --project
 ```
 
@@ -140,6 +143,7 @@ Set Library Path by node_modules after `npm install`
 #### Direct Execute
 
 ```bash
+node-liss ng lib-from-module
 node-liss ng lib-from-module --project
 ```
 
@@ -161,6 +165,7 @@ __tsconfig.json > compilerOptions > paths__:
 
 #### Direct Call
 ```bash
+node-liss ng lib-from-src
 node-liss ng lib-from-src --project
 ```
 
