@@ -2,8 +2,11 @@ const getTsImportFroms = require('./get-ts-import-froms.js');
 
 function getTsImportModules(root) {
 	return getTsImportFroms(root)
-		.filter(path => {
-			return path.split('/').length < 3;
+		.map(path => {
+			return path.split('/').slice(0, 2).join('/')
+		})
+		.filter((module, index, self) => {
+			return self.indexOf(module) === index;
 		})
 }
 
