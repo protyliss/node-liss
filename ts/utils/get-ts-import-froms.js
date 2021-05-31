@@ -21,7 +21,7 @@ function getTsImportFroms(root) {
 							return;
 						}
 						if (modules.indexOf(from) === -1) {
-							console.log(from);
+							// console.log(from);
 							modules.push(from)
 						}
 					})

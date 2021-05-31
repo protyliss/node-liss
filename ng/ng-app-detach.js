@@ -49,8 +49,11 @@ ngPromptSelectApplication({
 			usedLocalModules.push(module)
 
 			getTsImportModules(localProject.root).forEach((_module) => {
-				if (usedModules.indexOf(_module) === -1) {
+				const index = usedModules.indexOf(_module);
+				if (index === -1) {
 					usedModules.push(_module);
+				}else{
+					console.warn('pass', _module, index);
 				}
 			});
 		}
