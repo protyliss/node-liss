@@ -10,4 +10,6 @@ if (!cwdFileExists('package.json')) {
 
 const lastModifiedTime = getFilesLastModifiedTime('.');
 
+console.log(lastModifiedTime);
+
 setVersionByTime(lastModifiedTime, 'package.json');

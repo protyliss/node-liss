@@ -13,23 +13,13 @@ function getFilesLastModifiedTime(...dirs) {
 
 			const prefix = dir.endsWith('/') ? dir.substr(0, dir.length - 1) : dir;
 
-			_mtimes = GLOB.sync(prefix + '/*').reduce((__mtimes, lowerItem) => {
+			_mtimes = GLOB.sync(prefix + '/**/*').reduce((__mtimes, lowerItem) => {
 				if (_IGNORE.test(lowerItem)) {
 					return _mtimes;
 				}
 
-				console.log(lowerItem);
-
-				if (cwdFileExists(lowerItem)) {
-					_mtimes.push(getDate(lowerItem))
-					return _mtimes;
-				}
-
-				return __mtimes.concat(
-					GLOB.sync(lowerItem + '/**/*', {
-						nodir: true
-					}).map(getDate)
-				)
+				_mtimes.push(getDate(lowerItem))
+				return _mtimes;
 			}, _mtimes);
 
 			console.groupEnd();
@@ -41,6 +31,7 @@ function getFilesLastModifiedTime(...dirs) {
 }
 
 function getDate(file) {
+	;
 	return (new Date(FS.lstatSync(file).mtime)).getTime();
 }
 
