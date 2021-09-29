@@ -1,6 +1,6 @@
 {
   "name": "node-liss",
-  "version": "21.152.0",
+  "version": "21.272.0",
   "description": "CLI for node.js-based workspace",
   "scripts": {},
   "bin": {
