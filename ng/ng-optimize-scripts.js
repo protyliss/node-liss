@@ -26,13 +26,13 @@ Object.entries(ngProjects()).forEach(([key, project]) => {
 
 		scripts[key + ':serve'] = `ng serve ${portFlag} --open`;
 		scripts[key + ':build'] = `ng build ${projectFlag} --output-hashing=all`;
-		// scripts[key + ':prod']  = scripts[key + ':build'] + ' --prod --verbose';
+		scripts[key + ':prod']  = scripts[key + ':build'] + ' --configration production';
 
 		addAdditionalScript(scripts, jobConfigure.application, key);
 
 	} else {
 		scripts[key + ':build'] = `ng build ${projectFlag}`;
-		// scripts[key + ':prod']  = scripts[key + ':build'] + ' --prod';
+		scripts[key + ':prod']  = scripts[key + ':build'] + ' --configuration production';
 		addAdditionalScript(scripts, jobConfigure.library, key);
 	}
 });
