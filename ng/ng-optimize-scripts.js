@@ -16,7 +16,7 @@ const configure = getConfigure({
 	}
 });
 
-const jobConfigure = configure.ng.optimizeScripts;
+const jobConfigure = configure?.ng?.optimizeScripts || {};
 
 Object.entries(ngProjects()).forEach(([key, project]) => {
 	const projectFlag = `--project=${key}`;
