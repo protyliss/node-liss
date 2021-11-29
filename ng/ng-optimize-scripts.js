@@ -32,6 +32,7 @@ Object.entries(ngProjects()).forEach(([key, project]) => {
 
 	} else {
 		scripts[key + ':build'] = `ng build ${projectFlag}`;
+		scripts[key + ':watch'] = scripts[key + ':build'] + ' --watch';
 		scripts[key + ':prod']  = scripts[key + ':build'] + ' --configuration=production';
 		addAdditionalScript(scripts, jobConfigure.library, key);
 	}
