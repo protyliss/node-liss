@@ -1,10 +1,9 @@
-const GLOB               = require("glob");
-const cwdDirExists       = require("../utils/cwd-dir-exists");
-const cwdFileExists      = require("../utils/cwd-file-exists");
-const cwdRequire         = require("../utils/cwd-require");
-const cwdWriteJson       = require("../utils/cwd-write-json");
-const ngProjects         = require("./utils/ng-projects");
-const getTsImportFroms   = require('../ts/utils/get-ts-import-froms.js');
+const GLOB          = require("glob");
+const cwdDirExists  = require("../utils/cwd-dir-exists");
+const cwdFileExists = require("../utils/cwd-file-exists");
+const cwdRequire    = require("../utils/cwd-require");
+const cwdWriteJson  = require("../utils/cwd-write-json");
+const ngProjects    = require("./utils/ng-projects");
 
 console.log('Set `package.json` for Sub Module in Library');
 Object.entries(ngProjects('library')).forEach(([key, project]) => {
@@ -12,6 +11,7 @@ Object.entries(ngProjects('library')).forEach(([key, project]) => {
 
 	let startIndex = root.length + 1;
 	console.group(key);
+
 	GLOB.sync(root + '/*')
 		.forEach(dir => {
 			if (!cwdDirExists(dir) || !cwdFileExists(dir, 'public-api.ts')) {
@@ -26,37 +26,23 @@ Object.entries(ngProjects('library')).forEach(([key, project]) => {
 
 			console.group(subname);
 
-			const subPackageJson = cwdFileExists(dir, 'package.json') ?
-				cwdRequire(dir, 'package.json') :
+			const subNgPackageJson = cwdFileExists(dir, 'ng-package.json') ?
+				cwdRequire(dir, 'ng-package.json') :
 				{
-					ngPackage: {
-						lib: {
-							entryFile: 'public-api.ts'
-						}
+					"$schema": "../../../../node_modules/ng-packagr/ng-package.schema.json",
+					"lib"    : {
+						"entryFile"        : "public-api.ts",
+						"styleIncludePaths": [
+							"../../../../node_modules"
+						]
 					}
-				};
+				}
 
-			const {lib} = subPackageJson.ngPackage;
 
-			lib['umdModuleIds'] = getTsImportFroms(dir).reduce((umdIds, module) => {
-				umdIds[module] = module;
-				return umdIds;
-			}, {});
-
-			lib['styleIncludePaths'] = [
-				Array.from(
-					Array(root.split('/').length + 1))
-					.map(_ => '../')
-					.join('')
-				+ 'node_modules'
-			];
-
-			cwdWriteJson(dir, 'package.json', subPackageJson);
-
-			console.log(lib);
+			cwdWriteJson(dir, 'ng-package.json', subNgPackageJson);
 
 			console.groupEnd();
 		});
 
-	console.groupEnd(key);
+	console.groupEnd();
 });

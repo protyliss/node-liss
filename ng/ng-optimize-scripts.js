@@ -1,42 +1,56 @@
-const ngProjects    = require("./utils/ng-projects");
-const cwdRequire    = require("../utils/cwd-require");
-const cwdWriteJson  = require("../utils/cwd-write-json");
-const getConfigure  = require('../core/get-configure.js');
+const PATH         = require('path');
+const PROCESS      = require('process');
+const ngProjects   = require("./utils/ng-projects");
+const cwdRequire   = require("../utils/cwd-require");
+const cwdWriteJson = require("../utils/cwd-write-json");
+const getConfigure = require('../core/get-configure.js');
 console.log('Optimize package.scripts');
 
-const scripts = {};
-let port      = 4200;
+
+let port = 4200;
 
 const configure = getConfigure({
 	ng: {
 		optimizeScripts: {
 			application: null,
-			library    : null
+			library    : null,
+			scripts    : null
 		}
 	}
 });
 
 const jobConfigure = configure?.ng?.optimizeScripts || {};
 
-Object.entries(ngProjects()).forEach(([key, project]) => {
-	const projectFlag = `--project=${key}`;
+const scripts = jobConfigure.scripts || {};
 
-	if (project.projectType === 'application') {
-		const portFlag = projectFlag + ` --port=${port++}`;
+Object.entries(ngProjects()).forEach(
+	([key, project]) => {
+		const projectFlag = `--project=${key}`;
 
-		scripts[key + ':serve'] = `ng serve ${portFlag} --open`;
-		scripts[key + ':build'] = `ng build ${projectFlag} --output-hashing=all`;
-		scripts[key + ':prod']  = scripts[key + ':build'] + ' --configuration=production';
+		if (project.projectType === 'application') {
+			const portFlag = projectFlag + ` --port=${port++}`;
 
-		addAdditionalScript(scripts, jobConfigure.application, key);
+			scripts[key + ':serve'] = `ng serve ${portFlag} --open`;
+			scripts[key + ':build'] = `ng build ${projectFlag} --output-hashing=all`;
+			scripts[key + ':prod']  = scripts[key + ':build'] + ' --configuration=production';
 
-	} else {
-		scripts[key + ':build'] = `ng build ${projectFlag}`;
-		scripts[key + ':watch'] = scripts[key + ':build'] + ' --watch';
-		scripts[key + ':prod']  = scripts[key + ':build'] + ' --configuration=production';
-		addAdditionalScript(scripts, jobConfigure.library, key);
+			addAdditionalScript(scripts, jobConfigure.application, key);
+
+		} else {
+			scripts[key + ':build'] = `ng build ${projectFlag}`;
+			scripts[key + ':watch'] = scripts[key + ':build'] + ' --watch';
+			scripts[key + ':prod']  = scripts[key + ':build'] + ' --configuration=production';
+
+			const ngPackageFile       = project.architect.build.options.project;
+			const ngPackage           = cwdRequire(ngPackageFile)
+			const dest                = PATH
+				.join(PATH.dirname(ngPackageFile), ngPackage.dest)
+				.replace(/\\/g, '/');
+			scripts[key + ':publish'] = `cd ${dest} && npm publish`
+			addAdditionalScript(scripts, jobConfigure.library, key);
+		}
 	}
-});
+);
 
 function addAdditionalScript(scripts, map, key) {
 	if (!map) {

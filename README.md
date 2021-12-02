@@ -171,9 +171,9 @@ node-liss ng lib-from-src --project
 
 
 ###  Job - `ng-lib-package`
-*Update `${project.root}/ng-package.json`, `${project.root}/${sub-package}/package.json`*
+*Update `${project.root}/ng-package.json`, `${project.root}/${sub-package}/ng-package.json`*
 
-Create or Update Library Package for `umdIds`, `styleIncludePaths`
+Create or Update Sub Package's ng-package.json
 
 #### Direct Execute
 
@@ -205,12 +205,17 @@ node-liss ng optimize-scripts
       },
       "application": {
         "{{key}}": "{{key}}"
+      },
+      "scripts": {
+        "foo": "foo",
+        "bar": "bar"
       }
     }
   }
 }
 ```
 * `{{key}}` will replace to project key of angular
+* `scripts` property are static scripts
 
 
 ###  Job - `ng-optimize-tslint`
