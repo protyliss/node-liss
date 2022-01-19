@@ -2,8 +2,10 @@
 
 const cwdFileExists = require('./utils/cwd-file-exists.js');
 const getParameter = require('./utils/get-parameter');
+const packageJson = require('./package.json');
 
-console.log('LISS in the Command line')
+console.log('LISS in the Command line');
+console.log(packageJson.version);
 
 function run(platform) {
 	const detectFiles = {

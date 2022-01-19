@@ -13,8 +13,13 @@ const libraryVersions = {
 };
 
 Object.entries(ngProjects('library')).forEach(([key, project]) => {
-	libraryVersions[key] = cwdRequire(project.root, 'package.json').version;
+	const version = cwdRequire(project.root, 'package.json').version;
+	const first = version.charAt(0);
+	// noinspection EqualityComparisonWithCoercionJS
+	libraryVersions[key] = first == +first ? '^' + version : version;
 });
+
+console.info(libraryVersions);
 
 Object.entries(ngProjects()).forEach(([key, project]) => {
 	const {root, sourceRoot} = project;
@@ -36,9 +41,7 @@ Object.entries(ngProjects()).forEach(([key, project]) => {
 
 				const version = libraryVersions[module];
 				if (version) {
-					const flag = version.charAt(0);
-					// noinspection EqualityComparisonWithCoercionJS
-					di[module] = flag == +flag ? '^' + version : version;
+					di[module] = version;
 				}
 				return di;
 			},
