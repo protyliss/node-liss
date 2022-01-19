@@ -52,7 +52,7 @@ ngPromptSelectApplication({
 				const index = usedModules.indexOf(_module);
 				if (index === -1) {
 					usedModules.push(_module);
-				}else{
+				} else {
 					console.warn('pass', _module, index);
 				}
 			});
@@ -109,10 +109,24 @@ ngPromptSelectApplication({
 
 		console.group('Remove Unused Package');
 		const {dependencies} = packageJson;
+
+		const required = [
+			'rxjs',
+			'tslib',
+			'zone.js'
+		];
+
 		Object.keys(dependencies).forEach(di => {
 			if (di.startsWith('@angular')) {
 				return;
 			}
+
+			const isRequired = required.indexOf(di);
+			if (isRequired > -1) {
+				required.splice(isRequired, 1);
+				return;
+			}
+
 			if (usedModules.indexOf(di) === -1) {
 				console.log('Remove:', di);
 				delete dependencies[di];
