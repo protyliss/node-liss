@@ -1,6 +1,7 @@
 # node-liss
 
-CLI for node.js-based workspace
+CLI for node.js-based workspace    
+
 
 ```bash
 # Now Available
@@ -43,7 +44,7 @@ Follow the detailed description in below `Configure` Section.
 
 Auto-detecting by `package.json` when not entered [PLATFORM] parameter
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss node
@@ -58,7 +59,7 @@ node-liss node [JOB]
 
 Change Version by Last Modified Time of Source files.
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss node package-version
@@ -80,6 +81,20 @@ node-liss ng [JOB]
 ```
 
 
+### Job - 'ng-app-worker'
+
+*Update `angular.json`*
+
+Create `tsconfig.worker.json` File to Application Root
+And Add It path to `angular.json`
+
+Direct Execute:
+
+```bash
+node-liss ng app-worker
+node-liss ng app-worker --project
+```
+
 
 ###  Job - `ng-app-detach`
 *Update `angular.json`, `package.json`, `tsconfig.json`*
@@ -88,7 +103,7 @@ __Caution: Remove Unused files from Selected Project__
 Make Workspace to Single Application from Multiple Application and Libraries    
 
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss ng app-detach
@@ -125,7 +140,7 @@ __tsconfig.json > compilerOptions > paths__:
 }
 ```
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss ng lib-from-dist
@@ -140,7 +155,7 @@ node-liss ng lib-from-dist --project
 Set Library Path by node_modules after `npm install`
 
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss ng lib-from-module
@@ -163,7 +178,8 @@ __tsconfig.json > compilerOptions > paths__:
 }
 ```
 
-#### Direct Call
+Direct Execute:
+
 ```bash
 node-liss ng lib-from-src
 node-liss ng lib-from-src --project
@@ -175,7 +191,7 @@ node-liss ng lib-from-src --project
 
 Create or Update Sub Package's ng-package.json
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss ng lib-package
@@ -188,7 +204,7 @@ node-liss ng lib-package
 
 Make Project's shorten commands
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss ng optimize-scripts
@@ -224,7 +240,7 @@ node-liss ng optimize-scripts
 
 Append Director and Component Selector
 
-#### Direct Execute
+Direct Execute:
 
 ```bash
 node-liss ng optimize-tslint

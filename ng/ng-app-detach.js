@@ -150,9 +150,9 @@ ngPromptSelectApplication({
 
 		const {paths} = tsconfigJson.compilerOptions;
 		Object.keys(paths).forEach(key => {
-			const splitedKey = key.split('/');
-			const module = splitedKey.length > 2 ?
-				splitedKey.slice(0, 2).join('/') :
+			const segments = key.split('/');
+			const module = segments.length > 2 ?
+				segments.slice(0, 2).join('/') :
 				key;
 			if (usedModules.indexOf(module) === -1) {
 				console.log('Remove:', key);
