@@ -17,7 +17,7 @@ function getTsImportFroms(root) {
 				if (imports) {
 					imports.forEach(_import => {
 						const from = _import.match(_IMPORT)[1];
-						if (from.startsWith('.')) {
+						if (from.startsWith('.') || from.startsWith('node:')) {
 							return;
 						}
 						if (modules.indexOf(from) === -1) {

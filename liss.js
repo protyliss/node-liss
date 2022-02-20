@@ -9,7 +9,8 @@ console.log(packageJson.version);
 
 function run(platform) {
 	const detectFiles = {
-		ng: 'angular.json',
+		ng  : 'angular.json',
+		ts  : 'tsconfig.json',
 		node: 'package.json'
 	}
 	const detectedFiles = {};
@@ -29,6 +30,8 @@ function run(platform) {
 			switch (platform) {
 				case 'ng':
 					return require('./ng/liss.js');
+				case 'ts':
+					return require('./ts/liss.js');
 				case 'node':
 					return require('./node/liss.js');
 			}
