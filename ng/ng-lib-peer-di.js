@@ -6,11 +6,17 @@ const getTsImportModules = require("../ts/utils/get-ts-import-modules");
 
 console.log('Update peerDependencies from Source');
 
-const packageJson = cwdRequire('package.json');
+const packageJson    = cwdRequire('package.json');
+const {dependencies} = packageJson;
 
-const libraryVersions = {
-	...(packageJson.dependencies || {})
-};
+const libraryVersions = Object.entries(dependencies).reduce((versions, [packageName, version]) => {
+		versions[packageName] = packageName.startsWith('@angular') ?
+			version.replace(/^~/, '^') :
+			version;
+		return versions;
+	},
+	{}
+);
 
 Object.entries(ngProjects('library')).forEach(([key, project]) => {
 	const {root} = project;
