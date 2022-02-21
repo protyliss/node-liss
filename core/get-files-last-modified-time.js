@@ -9,7 +9,7 @@ function getFilesLastModifiedTime(...dirs) {
 				return _mtimes;
 			}
 
-			console.group(dir);
+			console.group(`Check Directory: ${dir}`);
 
 			const prefix = dir.endsWith('/') ? dir.substr(0, dir.length - 1) : dir;
 
@@ -31,7 +31,6 @@ function getFilesLastModifiedTime(...dirs) {
 }
 
 function getDate(file) {
-	;
 	return (new Date(FS.lstatSync(file).mtime)).getTime();
 }
 

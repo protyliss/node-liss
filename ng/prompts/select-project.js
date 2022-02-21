@@ -4,9 +4,9 @@ const getFlag = require("../../utils/get-flag");
 
 
 /**
- * @param {null | 'application' | 'library'} type
- * @param {boolean} multiple
- * @param {boolean} requireConfirm
+ * @param {null | 'application' | 'library'=null} type
+ * @param {boolean=false} multiple
+ * @param {boolean=false} requireConfirm
  * @returns {Promise<Array.<string, {}>>}
  */
 function ngPromptSelectProject({type, multiple, requireConfirm} = {}) {
