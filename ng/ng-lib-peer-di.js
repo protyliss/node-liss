@@ -13,8 +13,14 @@ const libraryVersions = {
 };
 
 Object.entries(ngProjects('library')).forEach(([key, project]) => {
-	const version = cwdRequire(project.root, 'package.json').version;
-	const first = version.charAt(0);
+	const {root} = project;
+	if (!cwdFileExists(root, 'package.json')) {
+		console.warn(root, ' has not package.json');
+		return;
+	}
+
+	const version        = cwdRequire(project.root, 'package.json').version;
+	const first          = version.charAt(0);
 	// noinspection EqualityComparisonWithCoercionJS
 	libraryVersions[key] = first == +first ? '^' + version : version;
 });
