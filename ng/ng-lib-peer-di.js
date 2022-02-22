@@ -3,8 +3,9 @@ const cwdRequire         = require("../utils/cwd-require");
 const cwdFileExists      = require("../utils/cwd-file-exists");
 const cwdWriteJson       = require("../utils/cwd-write-json");
 const getTsImportModules = require("../ts/utils/get-ts-import-modules");
+const {underline}        = require('../decorate.js');
 
-console.log('Update peerDependencies from Source');
+console.log(underline`Update peerDependencies from Source`);
 
 const packageJson    = cwdRequire('package.json');
 const {dependencies} = packageJson;

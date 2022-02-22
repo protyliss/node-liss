@@ -1,8 +1,9 @@
-const cwdFileExists = require("../utils/cwd-file-exists");
-const setVersionByTime = require("../core/set-version-by-time");
+const cwdFileExists            = require("../utils/cwd-file-exists");
+const setVersionByTime         = require("../core/set-version-by-time");
 const getFilesLastModifiedTime = require("../core/get-files-last-modified-time");
+const {underline}              = require('../decorate.js');
 
-console.log(`Set 'package.json' Version by Last Modified Time`);
+console.log(underline`Set 'package.json' Version by Last Modified Time`);
 
 if (!cwdFileExists('package.json')) {
 	console.warn('Cannot found package.json');

@@ -1,26 +1,26 @@
 #!/usr/bin/env node
 
 const cwdFileExists = require('./utils/cwd-file-exists.js');
-const getParameter = require('./utils/get-parameter');
-const packageJson = require('./package.json');
+const getParameter  = require('./utils/get-parameter');
+const packageJson   = require('./package.json');
+const fetch         = require('./fetch.js');
 
-console.log('LISS in the Command line');
-console.log(packageJson.version);
+console.log(`node-liss@${packageJson.version}`);
 
 function run(platform) {
-	const detectFiles = {
+	const detectFiles   = {
 		ng  : 'angular.json',
 		ts  : 'tsconfig.json',
 		node: 'package.json'
 	}
 	const detectedFiles = {};
 
-	Object.keys(detectFiles).some(_platform => {
-		const file = detectFiles[_platform];
+	Object.keys(detectFiles).some(platform_ => {
+		const file = detectFiles[platform_];
 		if (cwdFileExists(file)) {
-			detectedFiles[_platform] = true;
+			detectedFiles[platform_] = true;
 			if (!platform) {
-				platform = _platform;
+				platform = platform_;
 			}
 		}
 	});
@@ -44,9 +44,22 @@ function run(platform) {
 	console.warn('Cannot Found Supported Platform');
 }
 
-
-run(
-	getParameter({
-		matches: ['node', 'ts', 'ng'],
+fetch('https://registry.npmjs.org/-/package/node-liss/dist-tags')
+	.then(response => response.json())
+	.then((distTags) => {
+		const {latest} = distTags;
+		if (latest !== packageJson.version) {
+			console.info(`\tFound New Version`)
+			console.info(`\tnpm i node-liss@${latest}`);
+		}
 	})
-);
+	.catch(reason => {
+		// console.log(reason);
+	})
+	.finally(() => {
+		run(
+			getParameter({
+				matches: ['node', 'ts', 'ng'],
+			})
+		)
+	});

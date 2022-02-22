@@ -58,7 +58,7 @@ function selectJob(dirs, autoSelect = false) {
 				{
 					type: 'autocomplete',
 					name: 'job',
-					message: 'LISS will work for you',
+					message: 'Choose the job you want.',
 					choices: jobNames,
 					source(answersSoFar, input) {
 						return Promise.resolve(input ?

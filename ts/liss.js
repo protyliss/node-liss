@@ -1,5 +1,7 @@
-const PATH = require('path');
-console.log('Typescript!');
+const PATH           = require('path');
+const {heading, box} = require('../decorate.js');
+
+console.log(box`Typescript!`);
 
 require('../core/prompts/select-job')([
 	__dirname,

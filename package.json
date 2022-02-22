@@ -1,9 +1,10 @@
 {
   "name": "node-liss",
-  "version": "22.53.0",
+  "version": "22.53.15",
   "description": "CLI for node.js-based workspace",
   "scripts": {
-    "version": "node-liss node package-version"
+    "node-package-version": "node liss node package-version",
+    "start": "node liss"
   },
   "bin": {
     "node-liss": "liss.js"
