@@ -82,19 +82,6 @@ node-liss ng lib-from-dist
 node-liss ng lib-from-dist --project
 ```
 
-### ng-lib-from-module
-
-*Update `tsconfig.json`*
-
-Set Library Path by node_modules after `npm install`
-
-Direct Execute:
-
-```bash
-node-liss ng lib-from-module
-node-liss ng lib-from-module --project
-```
-
 ### ng-lib-from-src
 
 *Update `tsconfig.json`*

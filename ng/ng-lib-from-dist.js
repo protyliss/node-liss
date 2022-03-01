@@ -4,31 +4,41 @@ const cwdRequire            = require('../utils/cwd-require.js');
 const cwdWriteJson          = require('../utils/cwd-write-json.js');
 const ngLibraryPackages     = require('./utils/ng-library-packages.js');
 const ngPromptSelectLibrary = require("./prompts/select-library");
+const PATH                  = require('path');
 
 ngPromptSelectLibrary({multiple: true})
 	.then((selectedProjects) => {
+		const tsConfigJson = cwdRequire('tsconfig.json');
+		const {paths}      = tsConfigJson.compilerOptions
+
 		selectedProjects.forEach(([key, project]) => {
 			console.group(key);
-			const libraryPackages = ngLibraryPackages(project);
-			const tsConfigJson = cwdRequire('tsconfig.json');
 
-			const {paths} = tsConfigJson.compilerOptions
-
-			Object.keys(libraryPackages).forEach(key => {
-				const {distRoot} = libraryPackages[key];
-
-				paths[key] = [
-					distRoot,
-					distRoot + '/' + key
-						.replace(/^@/, '')
-						.replace(/[\/]/g, '-')
-				];
-
+			Object.keys(paths).forEach(pathKey => {
+				if (pathKey.startsWith(key)) {
+					console.warn('Remove:', pathKey);
+					delete paths[pathKey];
+				}
 			});
 
-			cwdWriteJson('tsconfig.json', tsConfigJson);
+			const {root}            = project;
+			const ngPackageJsonFile = project.architect.build.options.project
+			const ngPackageJson     = cwdRequire(ngPackageJsonFile);
+			const dest              = PATH.join(root, ngPackageJson.dest).replace(/\\/g, '/');
 
-			console.log(paths);
+			paths[key] = [
+				dest,
+				dest + '/' + (
+					key
+						.replace(/^@/, '')
+						.replace(/[\/]/g, '-')
+				)
+			];
+
+			console.log(paths[key]);
+
 			console.groupEnd();
 		});
+
+		cwdWriteJson('tsconfig.json', tsConfigJson);
 	});

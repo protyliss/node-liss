@@ -1,50 +1,57 @@
 console.log('Import Angular Library as Live');
 
-const cwdRequire = require('../utils/cwd-require.js');
-const cwdWriteJson = require('../utils/cwd-write-json.js');
-const ngLibraryPackages = require('./utils/ng-library-packages.js');
+const cwdRequire            = require('../utils/cwd-require.js');
+const cwdWriteJson          = require('../utils/cwd-write-json.js');
 const ngPromptSelectLibrary = require("./prompts/select-library");
+const GLOB                  = require('glob');
+const PATH                  = require('path');
 
 ngPromptSelectLibrary({multiple: true})
 	.then((selectedProjects) => {
+		const tsConfigJson = cwdRequire('tsconfig.json');
+		const {paths}      = tsConfigJson.compilerOptions
+
 		selectedProjects.forEach(([key, project]) => {
 			console.group(key);
-			const libraryPackages = ngLibraryPackages(project);
 
-			const paths = {};
-
-			Object.keys(libraryPackages).forEach(key => {
-				const {sourceRoot, packageJsonFile} = libraryPackages[key];
-
-				const packageJson = cwdRequire(packageJsonFile);
-
-				paths[key] = [
-					packageJson.lib ?
-						sourceRoot + entryFile(packageJson.lib.entryFile) :
-						sourceRoot + entryFile(packageJson.ngPackage.lib.entryFile)
-				];
-
-				paths[key + '/*'] = [
-						sourceRoot + '/*'
-				];
+			Object.keys(paths).forEach(pathKey => {
+				if (pathKey.startsWith(key)) {
+					console.warn('Remove:', pathKey);
+					delete paths[pathKey];
+				}
 			});
 
-			const tsConfigJson = cwdRequire('tsconfig.json');
+			const ngPackageJsonFile = project.architect.build.options.project
+			const ngPackageJson     = cwdRequire(ngPackageJsonFile);
 
-			tsConfigJson.compilerOptions.paths = {
-				...tsConfigJson.compilerOptions.paths,
-				...paths
-			};
 
-			console.log(paths);
+			paths[key] = [
+				project.root + '/' + entryFile(ngPackageJson)
+			];
 
-			cwdWriteJson('tsconfig.json', tsConfigJson);
+			console.log(paths[key]);
+
+			const subPackages = GLOB.sync(project.root + '/*/ng-package.json');
+
+			subPackages.forEach(subPackage => {
+				const subPackageRoot   = PATH.dirname(subPackage);
+				const subPackageName   = PATH.basename(subPackageRoot);
+				const subKey           = key + '/' + subPackageName;
+				const subNgPackageJson = cwdRequire(subPackage);
+
+				paths[subKey] = [
+					subPackageRoot + '/' + entryFile(subNgPackageJson)
+				];
+
+				console.log(paths[subKey]);
+			});
+
 			console.groupEnd();
 		});
+
+		cwdWriteJson('tsconfig.json', tsConfigJson);
 	});
-function entryFile(file) {
-	if (!file.startsWith('/')) {
-		file = '/' + file;
-	}
-	return file.substr(0, file.length - 3);
+
+function entryFile(ngPackageJson) {
+	return ngPackageJson.lib.entryFile.replace(/.ts$/, '')
 }
