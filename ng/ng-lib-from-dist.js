@@ -2,7 +2,6 @@ console.log('Import Angular Library as Built');
 
 const cwdRequire            = require('../utils/cwd-require.js');
 const cwdWriteJson          = require('../utils/cwd-write-json.js');
-const ngLibraryPackages     = require('./utils/ng-library-packages.js');
 const ngPromptSelectLibrary = require("./prompts/select-library");
 const PATH                  = require('path');
 
