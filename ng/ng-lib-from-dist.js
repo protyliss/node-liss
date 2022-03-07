@@ -4,6 +4,7 @@ const cwdRequire            = require('../utils/cwd-require.js');
 const cwdWriteJson          = require('../utils/cwd-write-json.js');
 const ngPromptSelectLibrary = require("./prompts/select-library");
 const PATH                  = require('path');
+const GLOB                  = require('glob');
 
 ngPromptSelectLibrary({multiple: true})
 	.then((selectedProjects) => {
@@ -32,6 +33,10 @@ ngPromptSelectLibrary({multiple: true})
 						.replace(/^@/, '')
 						.replace(/[\/]/g, '-')
 				)
+			];
+
+			paths[key + '/*'] = [
+				dest + '/*'
 			];
 
 			console.log(paths[key]);
