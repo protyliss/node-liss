@@ -14,12 +14,16 @@ const packageJson = cwdRequire('package.json');
  */
 const dependencies = packageJson.dependencies;
 
+const getVersion = version => {
+	return /^[^\d]?\d/.test(version) ?
+		version.replace(/^[^\d]?(\d+)(\.\d+)*/, '$1') + '.x' :
+		version;
+}
+
 const libraryVersions = Object.entries(dependencies).reduce((
 		versions,
 		[packageName, version]) => {
-		if (/^.?\d/.test(version)) {
-			version[packageName] = parseInt(version) + '.x';
-		}
+		version[packageName] = getVersion(version);
 		return versions;
 	},
 	{}
@@ -33,9 +37,7 @@ Object.entries(ngProjects('library')).forEach(([key, project]) => {
 	}
 
 	const version        = cwdRequire(project.root, 'package.json').version;
-	const first          = version.charAt(0);
-	// noinspection EqualityComparisonWithCoercionJS
-	libraryVersions[key] = first == +first ? '^' + version : version;
+	libraryVersions[key] = getVersion(version);
 });
 
 console.info(libraryVersions);
