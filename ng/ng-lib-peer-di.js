@@ -7,13 +7,19 @@ const {underline}        = require('../decorate.js');
 
 console.log(underline`Update peerDependencies from Source`);
 
-const packageJson    = cwdRequire('package.json');
-const {dependencies} = packageJson;
+const packageJson = cwdRequire('package.json');
 
-const libraryVersions = Object.entries(dependencies).reduce((versions, [packageName, version]) => {
-		versions[packageName] = packageName.startsWith('@angular') ?
-			version.replace(/^~/, '^') :
-			version;
+/**
+ * @type {Object.<string, string>}
+ */
+const dependencies = packageJson.dependencies;
+
+const libraryVersions = Object.entries(dependencies).reduce((
+		versions,
+		[packageName, version]) => {
+		if (/^.?\d/.test(version)) {
+			version[packageName] = parseInt(version) + '.x';
+		}
 		return versions;
 	},
 	{}
