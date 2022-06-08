@@ -1,6 +1,6 @@
 {
   "name": "node-liss",
-  "version": "22.68.1",
+  "version": "22.160.0",
   "description": "CLI for node.js-based workspace",
   "scripts": {
     "node-package-version": "node liss node package-version",
@@ -31,6 +31,7 @@
     "inquirer": "^7.3.3",
     "inquirer-autocomplete-prompt": "^1.3.0",
     "inquirer-checkbox-plus-prompt": "^1.0.1",
-    "npm": "^8.3.1"
+    "npm": "^8.3.1",
+    "@js-dot/frame": "^22.159.1"
   }
 }

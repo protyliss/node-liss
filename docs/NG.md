@@ -150,7 +150,8 @@ node-liss ng optimize-scripts
 }
 ```
 
-* `{{key}}` will replace to project key of angular
+* `{{key}}` - key of `projects` in angular.json
+* `{{root}}` - `projects[key].root` in angular.json
 * `scripts` property are static scripts
 
 ### ng-optimize-tslint
