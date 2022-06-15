@@ -21,8 +21,8 @@ Object.entries(ngProjects('application')).forEach(
          *
          * @type {string[]}
          */
-        const styles = build['styles'] || [];
-        const assets = build['assets'] || [];
+        const styles = build['styles'] || (build['styles'] = []);
+        const assets = build['assets'] || (build['assets'] = []);
 
         optimizeStyles.forEach(optimizeStyle => {
             if (!styles.includes(optimizeStyle)) {
