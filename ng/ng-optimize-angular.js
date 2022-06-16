@@ -16,13 +16,13 @@ const {ng: {optimizeAngular: {styles: optimizeStyles, assets: optimizeAssets}}} 
 
 Object.entries(ngProjects('application')).forEach(
     ([key, project]) => {
-        const build = project['architect']['build'];
+        const options = project['architect']['build']['options'];
         /**
          *
          * @type {string[]}
          */
-        const styles = build['styles'] || (build['styles'] = []);
-        const assets = build['assets'] || (build['assets'] = []);
+        const styles = options['styles'] || (options['styles'] = []);
+        const assets = options['assets'] || (options['assets'] = []);
 
         optimizeStyles.forEach(optimizeStyle => {
             if (!styles.includes(optimizeStyle)) {
